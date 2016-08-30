@@ -1,0 +1,267 @@
+﻿{include file="include/header_dev.html"}
+<div class="mainContent">
+	<div class="w1200">
+		<div class="filterBar">
+			<p class="">您的位置：> <a href='index.php?module=devApp&action=devAppList&func=cgiList'>研发者</a> > {if $appInfo.iCgiId>0}编辑{else}新建{/if}组件 </p>
+		</div>
+		<div class="formlist">
+		 <h3 class="title_1"><i class="icon-pencil"></i> {if $appInfo.iCgiId>0}编辑{else}新建{/if}组件</h3>
+				<div class="col-sm-10">　　以下所有项为必填项，请认真填写，以便于业务更清楚的了解您的产品。</div>
+
+
+			<div class="col-md-10">
+      <div class="panel">
+          
+          <div class="panel-body">
+              <form class="form-horizontal tasi-form">
+              <input type='hidden' value='{$appInfo.iCgiId}' name='iCgiId'>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">组件名称：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control input-sm" name='sCgiName' data-is="not.empty" data-rd-title="组件名称：不能为空" value="{$appInfo.sCgiName}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">互娱中心：</label>
+                      <div class="col-sm-10">
+                          <select class="form-control" name='iDevCenter'>
+                            {foreach from=$DevCenter item=item key=key}
+                              <option value="{$key}" {if $appInfo.iDevCenter == $key}selected{/if}>{$item}</option>
+                            {/foreach}
+                          </select>
+                      </div>
+                  </div> 
+                  <a style="display:none;" href="index.php?module=totalApp&action=totalAppList&func=getGroupByCenterID" target="html" data-rel="iDevGroupSelect" data-prefunc="getDevCenterID" id="getDevGroup" data-auto="true"></a>
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">开发组：</label>
+                      <div class="col-sm-10">
+                          <select class="form-control" name='iCgiDevGroup' id="iDevGroupSelect">
+                            {foreach from=$devGroup item=item key=key}
+                              <option value="{$key}" {if $appInfo.iCgiDevGroup == $key}selected{/if}>{$item}</option>
+                            {/foreach}
+                          </select>
+                      </div>
+                  </div> 
+                   <div class="form-group">
+                    <label class="col-sm-2 control-label">联系人：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control input-sm oc_common oc_userchooser" name='sConnectRTX' data-is="not.empty" data-rd-title="联系人不能为空" id="ops" onchooser_blur="myBlur(target,data);" multiple="true" hideicon="true" value="{$appInfo.sConnectRTX}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">宣传图背景：</label>
+                      <div class="col-sm-10">
+                           <div id='sPublicText'>
+                              {foreach from=$colorArray item=item}
+                                  {if ($item%4) == 1}<div>{/if}
+                                  <label class="checkbox-inline">
+                                      <span class="bg{$item} icon_index_select" data-class-index="{$item}">{if $item==$appInfo.iCgiLogoColorIndex}<span class="select_color">√</span>{/if}</span>
+                                  </label>
+                                  {if ($item%4) == 0}</div>{/if}
+                                {/foreach}
+                               
+                              <input type="hidden" name="iCgiLogoColorIndex" value="{$appInfo.iCgiLogoColorIndex}">
+
+
+                           </div>
+                      </div>                                            
+                  </div>
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">组件分类：</label>
+                      <div class="col-sm-10">
+                          <select class="form-control" name='iCgiGroup'>
+                            {foreach from=$appKind[3] item=item key=key}
+                              <option value="{$key}" {if $appInfo.iCgiGroup==$key}selected{/if}>{$item}</option>
+                            {/foreach}
+                          </select>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">组件地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control input-sm" name='sCgiUrl' data-rd-title="请输入正确的链接" value="{$appInfo.sCgiUrl}">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">适用场景：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control input-sm" name='sCgiScene' data-is="not.empty" data-rd-title="应用场景不能为空" value="{$appInfo.sCgiScene}">
+                    </div>
+                  </div>
+
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">产品介绍：</label>
+                    <div class="col-sm-10">
+                    	<textarea class="form-control" name='sCgiIntroduction' data-is="not.empty" data-rd-title="产品介绍不能为空" >{$appInfo.sCgiIntroduction}</textarea>
+                        
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">组件文档地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control input-sm" name='sCgiContentUrl'  data-rd-title='请正确填写移动访问地址' value="{$appInfo.sCgiContentUrl}">
+                    </div>
+                  </div>   
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">组件事例地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control input-sm" name='sCgiExampleUrl'  data-rd-title='请正确填写移动访问地址' value="{$appInfo.sCgiExampleUrl}">
+                    </div>
+                  </div>  
+
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-2">
+                    <a href='index.php?module=devApp&action=cgiUpdate&func=cgiUpdate' target="subform" class="btn btn-info">提　交</a>
+                    </div>
+                    <div class="col-sm-2">
+                      <a href='index.php?module=totalApp&action=devAppList' class="btn btn-info">返&nbsp;&nbsp;&nbsp;&nbsp;回</a>
+                    </div>
+                  </div>  
+
+                 
+
+                  
+                  </form>
+
+              </div><!-- /.panel-body -->
+
+          </div><!-- /.panel -->
+      </div>
+
+
+		</div>
+		
+	</div>
+</div>
+<script type="text/javascript" src="http://hrc.oa.com/v1.1/resource/script/jquery.ext.js"></script>
+
+{literal}
+<style type="text/css">
+  .icon_index_select {
+    width: 36px;
+    height: 36px;
+    float: left;
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    line-height: 128px;
+    position: relative;
+  }
+  .select_color {
+    position: absolute;
+    left: 0px;
+    line-height: 36px;
+    width: 36px;
+  }
+</style>
+<script>
+  Trident.ready(function(){
+    initOACommon();
+    //logo控制
+    $('input[name=iCgiLogoKind]').change(function(){
+      if($(this).val()==2){
+        $('#sCgiPublicImg').hide();
+        $('#sPublicText').show();
+      }else{
+        $('#sCgiPublicImg').show();
+        $('#sPublicText').hide();
+      }
+      });
+
+
+
+    
+    //初始化验证
+    is =  is || {};
+    //图片logo验证
+    
+    is.sAppLogoCheck = function(e) {
+        if($('input[name=iCgiLogoKind]:checked').val()==1){
+          if(e.value==''){
+            Trident.tip(0,'sCgiPublicImgTips','请上传应用LOGO','right');
+            return false;
+          }else{
+            return true;
+          }
+        }
+        return true;
+        
+     }
+    //文字logo验证
+    is.sAppLogoTxtCheck = function(e) {
+      if($('input[name=iCgiLogoKind]:checked').val()==2){
+          return (e.value.replace(/[^x00-xff]/g,"01").length >= e.min && e.value.replace(/[^x00-xff]/g,"01").length <= e.max) ? true : false;
+          
+        }
+        return true;
+      }
+    is.sAppLogoTxtCheck.need = {min:2,max:16};
+
+    $('.icon_index_select').click(function(){
+      $('.select_color').remove();
+      $(this).html('<span class="select_color">√</span>');
+      $('input[name=iCgiLogoColorIndex]').val($(this).attr('data-class-index'));
+      // $('#appLogoShow').removeClass();
+      // $('#appLogoShow').addClass('icon_index bg'+$(this).attr('data-class-index'));
+      // if($('input[name=sAppLogoTxt]').val().replace(/[^x00-xff]/g,"01").length>=7){
+      //   $('#appLogoShow').addClass('pr');
+      // }
+    });
+
+    $('select[name=iDevCenter]').change(function(){
+      $('#getDevGroup').click();
+    });
+
+});
+//图片上传后处理
+function afterUpload(e){
+
+if(e.retCode == 0){
+  closeAll();
+  $('#sCgiPublicImgShow').attr('src',e.imgUrl);
+  $('input[name=sCgiPublicImg]').val(e.imgUrl);
+  
+}else{
+  error(e.retInfo);
+}
+}
+function getDevCenterID(){
+  var data = {};
+  data['iDevCenterID'] = $('select[name=iDevCenter]').val();
+  return data;
+}
+
+</script>
+
+{/literal}
+{include file="include/footer.html"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

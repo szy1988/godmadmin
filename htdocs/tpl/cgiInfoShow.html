@@ -1,0 +1,187 @@
+﻿{include file="include/header.html"}
+<div class="mainContent">
+	<div class="w1200 detailspage">
+	
+	
+		<div>
+		
+			<div class="lt">
+				<form>
+				<div class="search_div">
+					<input id="search" type="text" name="searchV" value="" placeholder="应用名称,常见问题" class="input_text lt" maxlength="">
+					<a id="searchAction" target="search" data-rel="showData" class="button-search lt"><i class="icon-search"></i></a>
+				</div>
+				</form>
+			</div>
+		
+			
+			<p class="rt">您的位置： 首页 > 全部应用 > 做活动 > 活动中心</p>
+			<div class="clear"></div>
+		</div>
+	
+
+		<div class="row">
+			<div class="col-md-9">
+
+			<div class="panel">
+
+
+
+				<div class="col-md-2" style="padding-left: 0;">
+					<!-- <span class="icon_index bg1">{$appInfo.sAppLogoTxt}</span> -->
+					{if $appInfo.iCgiLogoKind==2}<span class="devlogo icon_index bg1  {if $appInfo.sPublicText|@strlen==12}pr{/if}">
+						{if $appInfo.sPublicText|@strlen==12}<span class="fontsize4">{$appInfo.sPublicText}</span>
+							{else}{$appInfo.sPublicText}
+						{/if}</span>
+					{elseif $appInfo.iCgiLogoKind==1}<img class='devlogo' src="{$appInfo.sCgiPublicImg}" style='border-radius: 20px;'>
+					{else}<span class="icon_index bg{$smarty.foreach.foolist.index+1}">默认</span>
+					{/if}
+				</div>
+				<div class="col-md-7">
+					<h3 class="tltle_h3">{$appInfo.sCgiName}</h3>
+					<p style="height:60px;"></p>
+					<p><span>更新时间：{$appInfo.dtUDate}</span></p>
+				</div>
+				<div class="col-md-3 right_align">
+					
+				</div>
+
+
+
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="panel panel_border">
+					<header class="panel-heading">
+	                联系我们
+	                </header>
+	                <div class="panelbody">
+	                <p>研发支持</p>
+	                <p>运营研发中心　{$devGroup[$appInfo.iCgiDevGroup]}</p>
+	                <p class="bottmdiv">联系人:</p>
+	                <p>{$appInfo.sConnectRTX}</p>
+	                </div>
+                </div>
+				
+			</div>
+		</div>
+	
+
+
+	<div class="row">
+			<div class="col-md-9">
+			
+
+			<section class="panel general">
+                                
+                                    <ul class="nav-tabs">
+                                        <li class="active">
+                                            <a data-type="tab" href="#home">产品介绍</a>
+                                        </li>
+                                        <li class="">
+                                            <a data-type="tab" href="#about">产品操作手册</a>
+                                        </li>
+                                        <li class="">
+                                            <a data-type="tab" href="#profile">经典案例</a>
+                                        </li>
+                                    </ul>
+                               
+                                <div class="panel-body">
+                                    <div class="tab-content">
+                                        <div id="home" class="tab-pane active">
+
+                                        <div class="tab-pane">{$appInfo.sCgiIntroduction}</div>
+                                        <p><span class="glyphicon glyphicon-send" aria-hidden="true"><a href="{$appInfo.sCgiIntroduction}">了解详情请点击></a></span></p>
+                                        <p><span class="glyphicon glyphicon-send" aria-hidden="true"><a href="{$appInfo.sCgiExampleUrl}">查看事例 请点击></a></span></p>
+                                        
+                                        </div>
+                                        <div id="about" class="tab-pane"><a href="{$appInfo.sCgiContentUrl}" target="_blank">用户操作手册</a></div>
+                                        <div id="profile" class="tab-pane">经典案例</div>
+                                    </div>
+                                </div>
+            </section>
+
+
+			</div>
+
+
+
+			<div class="col-md-3">
+			<div class="panel panel_border">
+					<header class="panel-heading">
+	                大家都在用
+	                </header>
+	                <div class="panelbody">
+
+	                <div class="row_no bottomline">
+
+	                	<div class="col-md-4 nopadding">
+	                		<span class="icon_index bg1 smallicon">字字字字</span>
+	                		</div>
+	                	<div class="col-md-8">
+	                		<b class="f16">活动中心管理端</b>
+	                		<p>活动中心管理端</p>
+	                		<p>活动中心管理端</p>
+	                		<p>活动中心管理端</p>
+
+
+
+	                	</div>
+	                </div>
+
+	                <div class="row_no">
+
+	                	<div class="col-md-4 nopadding">
+	                		<span class="icon_index bg1 smallicon">字字字字</span>
+	                		</div>
+	                	<div class="col-md-8">
+	                		<b class="f16">活动中心管理端</b>
+	                		<p>活动中心管理端</p>
+	                		<p>活动中心管理端</p>
+	                		<p>活动中心管理端</p>
+
+
+
+	                	</div>
+	                </div>
+
+
+
+	                	
+	               
+	                </div>
+                </div>
+			</div>
+	</div>
+</div>
+
+</div>
+</div>
+{literal}
+
+<script type="text/javascript">
+
+</script>
+{/literal}
+{include file="include/footer.html"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

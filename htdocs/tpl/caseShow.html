@@ -1,0 +1,108 @@
+﻿{include file="include/header.html"}
+<div class="mainContent">
+    <div class="w1200">
+        <form>
+        <div class="filterBar underline">
+
+            <ul class="index_tabnav lt">
+                <li>
+                        <a href="javascript:void(0)" class="cur iCaseKindID" data-group="0" onclick="EAS.GODMClick({literal}{{/literal}'adtag':'PC.case_change_iCaseKindID_0'{literal}}{/literal})">全部</a>
+                    </li>
+                    
+                    {foreach from=$appKind key=key item=item}
+                    <li>
+                        <a href="javascript:void(0)" class="iCaseKindID" data-group="{$key}" onclick="EAS.GODMClick({literal}{{/literal}'adtag':'PC.case_change_iCaseKindID_{$key}'{literal}}{/literal})">{$item}</a>
+                    </li>
+                    {/foreach}
+            </ul>
+            <input type="hidden" name="iCaseKindID">
+        </div>
+            <a class="btn btn-success" target="search" id='searchClick' style="display:none;">查找</a>
+        </form>
+        <div id='showData'>
+        <!-- <ul class="list_v" id="dev">
+            {foreach from=$putData item=item}
+            <li>
+               <!-- <div class="picture"><img src="./images/lol-anni.png"></div>-->
+                <!--<div class="content">
+                    <div class="content_header bg1">
+                        <h2>{$item.sCaseName}</h2>
+                    </div>
+                    <div class="content_body">
+                        <div class="label label-info">{$appMap[$item.iSupportAppID]}</div>
+                        <p class="desc"><a href="{$item.sKMUrl}">{$item.sCaseContent}</a></p>
+                        <p class="contact_p">联系人：<a class="text190 contacts" href="rtxlite.hotlink://UserName={$item.sConnect}">{$item.sConnectRTX}</a></p>
+                    </div>
+                </div>
+            </li>
+            {/foreach}
+        </ul> -->
+
+        <ul class="list_v" id="case">
+            {foreach from=$putData item=item}
+            <li id='case{$item.iCaseId}' class="{if $item.hasZan==1}cur{/if} caseKind{$item.iCaseKindID}">
+                <div class="content">
+                    <div class="content_header bg1" style="background-image: url({$item.sImgUrl})">
+                        <h2>{$item.sCaseName}</h2>
+                    </div>
+                    <div class="content_body">
+                        <p class="desc"><a href="{$item.sKMUrl}" target="_blank">{$item.sCaseContent}</a></p>
+                    </div>
+                    <div class="content_footer pull-right">
+                        <a href="index.php?module=totalApp&action=caseShowForAction&func=zan&iCaseId={$item.iCaseId}" target="ajax" data-confirm="0"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span class="zan">{$item.iZan}</span></a>
+                    </div>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+
+
+
+
+
+        <div class="table_foot">
+            <div class="pagination" data-type='pagination' data-action="index.php?module=totalApp&action=caseShow" data-rel="showData" data-total="{$total}" data-perpage="{$pageSize}" data-numshow="7" data-current="{$pageCur}" style="text-align:center;"></div>
+        </div>   
+        </div> 
+    </div>
+</div>
+{literal}
+<script>
+    $('.iCaseKindID').click(function(){
+        $('input[name=iCaseKindID]').val($(this).attr('data-group'));
+        $(this).addClass('cur').parent('li').siblings('li').find('a').removeClass('cur');
+        $('#searchClick').click();
+    });
+
+
+    function afterZan(e){
+
+    if(e.retCode == 0){
+        $('.caseKind'+e.iCaseKindID).addClass('cur');
+        $('#case'+e.iCaseId+' .zan').html(parseInt($('#case'+e.iCaseId+' .zan').html())+1);
+    }
+    }
+</script>
+{/literal}
+{include file="include/footer.html"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

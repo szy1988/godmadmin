@@ -1,0 +1,192 @@
+﻿{include file="include/header_dev.html"}
+<div class="mainContent">
+	<div class="w1200">
+		<div class="filterBar">
+			<a class="btn btn-default" data-toggle="modal" href="index.php?module=totalApp&action=devAppList">应用</a> <a class="btn btn-default" data-toggle="modal" href="index.php?module=devApp&action=devAppList">工具</a> <a class="btn btn-primary" data-toggle="modal" href="index.php?module=devApp&action=devAppList&func=cgiList">组件</a> <a class="btn btn-default" data-toggle="modal" href="index.php?module=totalApp&action=caseControlList">案例</a>
+		</div>
+		<div class="formlist row">
+		 <h3 class="title_1"><i class="icon-pencil"></i> 组件列表</h3>
+				<div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-body">
+
+                                  <div class="box-tools-left m-b-15">  
+                                    {if $isAdmin == 1}
+                                      <a class="btn btn-primary" href="index.php?module=devApp&action=devAppList&func=passApp" data-prefunc='batchGetId' target="ajax">审核</a>
+                                      <a class="btn btn-danger" href="index.php?module=devApp&action=devAppList&func=refuseApp" data-prefunc='batchGetId' target="ajax">驳回</a>
+                                      <a class="btn btn-warning" href="index.php?module=devApp&action=devAppList&func=downLineApp" data-prefunc='batchGetId' target="ajax">下架</a>
+                                    {/if}
+                                      <a class="btn btn-info" href="index.php?module=devApp&action=cgiUpdate">添加</a>
+                                    
+                                  </div>
+                                  <div class="box-tools m-b-15">
+                                      <form class="form-inline">
+                                          <div class="form-group">
+                                              <label for="exampleInputName2">组件名称</label>
+                                              <input type="text" class="form-control" name='sCgiName'>
+                                          </div>
+
+                                          <div class="form-group">
+                                              <label for="exampleInputEmail2">开发中心</label>
+                                              <select name="iDevCenter" class="form-control" data-type="extend-select">
+                                                <option value="0" >全部</option>
+                                                {foreach from = $devGroup item=item key=key}
+                                                  <option value="{$key}" >{$item}</option>
+                                                {/foreach}
+                                              </select>
+                                          </div>
+
+                                          <div class="form-group">
+                                              <label for="exampleInputEmail2">组件分组</label>
+                                              <select name="iCgiGroup" class="form-control" data-type="extend-select">
+                                              <option value="0" >全部</option>
+                                              {foreach from = $appKind[3] item=item key=key}
+                                                  <option value="{$key}" >{$item}</option>
+                                              {/foreach}
+                                                 
+                                              </select>
+                                          </div>
+
+                                          <a class="btn btn-success" target="search" id='searchBtn' data-auto-trigger="change">查找</a>
+                                      </form>
+
+                                  </div>
+                                  <div id='showData'>
+                                  <table class="table" style='text-agint:'>
+                                      <thead>
+                                          <tr>
+                                              <td width="7%">
+                                                  <input type="checkbox" data-type="checkAll" data-item="items" value="1" id="input_56">
+                                              </td>
+                                              <th width="10%">应用ID</th>
+                                              <th width="10%">应用名称</th>
+                                              <th width="10%">联系人</th>
+                                              <th width="10%">应用地址</th>
+                                              <th width="25%">产品介绍</th>
+                                              <th width="10%">应用场景</th>
+                                              <th width="10%">应用状态</th>
+                                              <th >操作</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                        {foreach from=$putData item=item key=key}
+                                          <tr data-for="highlight" class="selectedH">
+                                              <td>
+                                                  <input type="checkbox" name="items" value="{$item.iCgiId}">
+                                              </td>
+                                              <td width="10%">{$item.iCgiId}</td>
+                                              <td width="10%">{$item.sCgiName}</td>
+                                              <td width="10%">{$item.sConnectRTX}</td>
+                                              <td width="10%"><a class="t-text-hidden" data-type="copy"  data-copy-content="{$item.sCgiUrl}" data-tp-title="点击复制">{$item.sCgiUrl}</a></td>
+                                              <td width="25%">{$item.sCgiIntroduction}</td>
+                                              <td width="10%">{$item.sCgiScene}</td>
+                                              <td width="10%">{if $item.iState==0}未审核{elseif $item.iState==1}<span style='color: green;'>运营中</span>{elseif $item.iState==2}<a data-tp-title="{$item.sRefuseReason}">驳回</a>{else}归档{/if}</td>
+                                              <td data-type="btnmerge">
+                                                  <div>
+                                                  {if $isAdmin == 1}
+                                                    {if $item.iState==0}<a class="btn btn-default btn-xs mb-5" href="index.php?module=devApp&action=devAppList&func=passApp&iCgiId={$item.iCgiId}" title="您确认要通过审核吗？" target="ajax">审核</a>{/if}
+                                                    {if $item.iState==1}<a class="btn btn-default btn-xs mb-5" href="index.php?module=devApp&action=devAppList&func=downLineApp&iCgiId={$item.iCgiId}" title="您确认要下架吗？" target="ajax">下架</a>{/if}
+                                                    
+                                                    {if $item.iState==0}<a class="btn btn-default btn-xs mb-5" href="javascript:refuse({$item.iCgiId});">驳回</a>{/if}
+                                                  {/if}
+                                                    <a class="btn btn-default btn-xs mb-5" href='index.php?module=devApp&action=cgiUpdate&iCgiId={$item.iCgiId}'>编辑</a>
+                                                  </div>
+                                              </td>
+                                          </tr>
+                                        {/foreach}
+                                         
+                                      </tbody>
+                                  </table>
+
+                                  <!-- 分页用之前的插件 -->
+                                  <div class="table_foot">
+                                      <div class="pagination" data-type='pagination' data-action="index.php?module=devApp&action=devAppList&func=cgiList" data-rel="showData" data-total="{$total}" data-perpage="{$pageSize}" data-numshow="7" data-current="{$pageCur}"></div>
+                                  </div>
+                                  </div>
+                                </div><!-- /.panel-body -->
+
+                            </div><!-- /.panel -->
+
+                        </div>
+		
+	</div>
+</div>
+
+<div id="showMyDialog" style="display:none">
+<div class="tips_system">
+    <p class="title_tips">驳回原因</p>
+<form>
+    <div class="tips_cont">
+      <div class="tips_right">
+
+        <p>
+          <textarea style="width: 400px; height: 150px;" name="sRefuseReason"></textarea>
+        </p>
+
+      </div>
+  
+    <div class="btn">
+      <a href="index.php?module=devApp&action=devAppList&func=refuseApp&iCgiId={$item.iCgiId}" class="tips_btn" target="subform" >确定</a><a href="javascript:Trident.closeAll();" class="cancel">取消</a>
+    </div>
+       
+    </div>
+</form>
+</div>
+</div>
+<script type="text/javascript" src="http://hrc.oa.com/v1.1/resource/script/jquery.ext.js"></script>
+
+{literal}
+<script>
+
+   
+function batchGetId(control){
+  var params = {};
+  var iCgiId = '';
+  $('input[name=items]:checked').each(function(){
+
+    iCgiId=iCgiId+$(this).val()+',';
+  });
+
+  params['iCgiId'] = iCgiId.substr(0,iCgiId.length-1);
+  return params;
+}
+
+function refuse(iCgiId){
+  $('#showMyDialog a').attr('href','index.php?module=devApp&action=devAppList&func=refuseApp&iCgiId='+iCgiId);
+  Trident.tpop('showMyDialog');
+}
+function afterBatch(e){
+  if(e.retCode == 0){
+    Trident.closeAll();
+    $('#searchBtn').click();
+  }else{
+    error(e.retInfo);
+  }
+  
+}
+
+</script>
+
+{/literal}
+{include file="include/footer.html"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+<!-- 左侧导航 -->
+<div class="template-page-wrapper">
+    <div class="navbar-collapse collapse templatemo-sidebar">
+    <ul class="templatemo-sidebar-menu">
+        <li class=""><a href="http://menhu.oa.com/index.php?r=main%2Findex" target="_blank"><i class="fa fa-home"></i>首页</a></li>
+        <li class="sub open">
+            <a href="javascript:void(0)">
+            <i class="fa fa-gamepad"></i>游戏接入<div class="pull-right"><span class="caret"></span></div>
+            </a>
+            <ul class="templatemo-submenu">
+                <li><a href="http://menhu.oa.com/index.php?r=main%2Faddnewgame" target="_blank">添加新游</a></li>
+                <li><a href="http://menhu.oa.com/index.php?r=main%2Fgamelist" target="_blank">游戏列表</a></li>
+            </ul>
+        </li>
+
+        <li class="sub open">
+            <a href="javascript:void(0)"><i class="fa fa-th-large"></i>资源管理<div class="pull-right"><span class="caret"></span></div></a>
+            <ul class="templatemo-submenu">
+                {*<li><a href="index.php?module=act&action=schedule_list">查看资源排期</a></li>*}
+                <li class="sub open">
+                    <a href="#">查看资源管理</a>
+                    <ul class="templatemo-submenu">
+                        <li><a href="index.php?module=act&action=schedule_list"> > 查看排期</a></li>
+                        {if $aclGroup=='admin'}
+                        <li><a href="index.php?module=stat&action=addGame"> > 游戏管理</a></li>
+                        <li><a href="index.php?module=act&action=resource_manage"> > 资源管理</a></li>
+                        {/if}
+                    </ul>
+                </li>
+                
+                
+                
+                <li><a href="index.php?module=act&action=resource_request">申请资源排期</a></li>
+                <li class="sub open">
+                    <a href="#">资源排期管理</a>
+                    <ul class="templatemo-submenu">
+                        <li><a href="index.php?module=rule&action=rule_list"> > 排期规则</a></li>
+                        <li><a href="index.php?module=time&action=process_info"> > 查看进度</a></li>
+                        <li><a href="index.php?module=time&action=time_info"> > 时间管理</a></li>
+                    </ul>
+                </li>
+                <li><a href="index.php?module=stat&action=resource_data_list">数据反馈</a></li>
+                <li><a href="index.php?module=act&action=resource_list">我的资源管理</a></li>
+                <li><a href="index.php?module=material&action=materialList">我的素材管理</a></li>
+            </ul>
+        </li>
+        <li class="sub open">
+            <a href="javascript:void(0)"><i class="fa fa-inbox"></i>门户管理<div class="pull-right"><span class="caret"></span></div></a>
+            <ul class="templatemo-submenu">
+            <li><a href="http://menhu.oa.com/index.php?r=main%2Fpredict" target="_blank">预计完成时间</a></li>
+            </ul>
+        </li>
+    </ul>
+    </div>
+</div>

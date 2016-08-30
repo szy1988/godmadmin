@@ -1,0 +1,351 @@
+﻿{include file="include/header_dev.html"}
+<div class="mainContent">
+	<div class="w1200">
+		<div class="filterBar">
+			<a class="btn btn-primary" data-toggle="modal" href="index.php?module=totalApp&action=devAppList">应用</a> <a class="btn btn-default" data-toggle="modal" href="index.php?module=devApp&action=devAppList">工具</a> <a class="btn btn-default" data-toggle="modal" href="index.php?module=devApp&action=devAppList&func=cgiList">组件</a> <a class="btn btn-default" data-toggle="modal" href="index.php?module=totalApp&action=caseControlList">案例</a>
+		</div>
+		<div class="formlist row">
+		 <h3 class="title_1"><i class="icon-pencil"></i> 应用列表</h3>
+				<div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-body">
+
+                                  <div class="box-tools-left m-b-15">  
+                                    {if $isAdmin  == 1}
+                                      <a class="btn btn-primary" href="index.php?module=totalApp&action=devAppList&func=passApp" data-prefunc='batchGetId' target="ajax">审核</a>
+                                      <a class="btn btn-danger" href="index.php?module=totalApp&action=devAppList&func=refuseApp" data-prefunc='batchGetId' target="ajax">驳回</a>
+                                      <a class="btn btn-warning" href="index.php?module=totalApp&action=devAppList&func=downLineApp" data-prefunc='batchGetId' target="ajax">下架</a>
+                                    {/if}
+                                      <a class="btn btn-info" href="index.php?module=totalApp&action=newAppUpload">添加</a>
+                                  </div>
+                                  <div class="box-tools m-b-15">
+                                      <form class="form-inline">
+                                          <div class="form-group">
+                                              <label for="exampleInputName2">应用名称</label>
+                                              <input type="text" class="form-control" name='sAppName'>
+                                          </div>
+
+                                          <div class="form-group">
+                                              <label for="exampleInputEmail2">业务</label>
+                                              <select name="sAppOnlyService" class="form-control" data-type="extend-select">
+                                                <option value="0" >全部</option>
+                                                {foreach from = $serviceMap item=item key=key}
+                                                  <option value="{$key}" >{$key}-{$item}</option>
+                                                {/foreach}
+                                              </select>
+                                          </div>
+
+                                          <div class="form-group">
+                                              <label for="exampleInputEmail2">开发中心</label>
+                                              <select name="iDevCenter" class="form-control" data-type="extend-select">
+                                                <option value="0" >全部</option>
+                                                {foreach from = $devGroup item=item key=key}
+                                                  <option value="{$key}" >{$item}</option>
+                                                {/foreach}
+                                              </select>
+                                          </div>
+
+                                          <div class="form-group">
+                                              <label for="exampleInputEmail2">应用分组</label>
+                                              <select name="iAppGroup" class="form-control" data-type="extend-select">
+                                              <option value="0" >全部</option>
+                                              {foreach from = $appKind[1] item=item key=key}
+                                                  <option value="{$key}" >{$item}</option>
+                                              {/foreach}
+                                                 
+                                              </select>
+                                          </div>
+
+                                          <a class="btn btn-success" data-auto-trigger="change" target="search" id='searchBtn'>查找</a>
+                                      </form>
+
+                                  </div>
+                                  <div id='showData'>
+                                  <table class="table" style='text-agint:'>
+                                      <thead>
+                                          <tr>
+                                              <td width="7%">
+                                                  <input type="checkbox" data-type="checkAll" data-item="items" value="1" id="input_56">
+                                              </td>
+                                              <th width="10%">应用ID</th>
+                                              <th width="10%">应用名称</th>
+                                              <th width="10%">所属业务</th>
+                                              <th width="10%">联系人</th>
+                                              <th width="10%">应用地址</th>
+                                              <th width="25%">产品介绍</th>
+                                              <th width="10%">智维权限</th>
+                                              <th width="10%">应用状态</th>
+                                              <th >操作</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                        {foreach from=$putData item=item key=key}
+                                          <tr data-for="highlight" class="selectedH">
+                                              <td>
+                                                  <input type="checkbox" name="items" value="{$item.iAppId}">
+                                                  <!--<div class="input-group-btn dropdown-open" data-type="class-cover" style="visibility:hidden;">
+                                                      <button data-toggle="dropdown" type="button"><span class="caret"></span></button>
+                                                      <ul role="menu" class="dropdown-menu">
+                                                          <li><a class="" data-rel="showid" onclick="javascript:void();">发布</a></li>
+                                                          <li><a class="">编辑</a></li>
+                                                          <li><a class="">删除</a></li>
+                                                          <li><a class="">查看日志</a></li>
+                                                      </ul>
+                                                  </div>-->
+                                              </td>
+                                              <td width="10%">{$item.iAppId}</td>
+
+                                              <td width="10%">{$item.sAppName}</td>
+                                              <td width="10%">{if $item.sAppOnlyService == ''}<span >全</span>
+                                                  {elseif strstr($item.sAppOnlyService,',')}
+                                                    <a data-tp-title="<div><p>{$item.sAppOnlyService}</p></div>">多</a>
+                                                  {else}
+                                                  {$item.sAppOnlyService}
+                                                  {/if}
+                                              </td>
+                                              <td width="10%">{$item.sConnectRTX}</td>
+                                              <td width="10%"><a class="t-text-hidden" data-type="copy"  data-copy-content="{$item.sAppUrl}" data-tp-title="点击复制">{$item.sAppUrl}</a></td>
+                                              <td width="25%">{$item.sAppIntroduction}</td>
+                                              <td width="10%">
+                                              {if $item.iPlatID==0}暂无权限
+                                              {else}
+                                                <a data-tp-title="<div><p>平台ID :  {$item.iPlatID}</p><p>平台角色：</p>{foreach  from = $item.sRoleIDList item=sitem key=skey}<p>{$skey}:{$sitem}</p>{foreachelse}<p>暂无角色</p>{/foreach}</div>">查看权限</a>
+                                              {/if}
+
+                                              </td>
+                                              <td width="10%">{if $item.iState==0}未审核{elseif $item.iState==1}<span style='color: green;'>运营中</span>{elseif $item.iState==2}驳回{else}归档{/if}</td>
+                                              <td data-type="btnmerge">
+                                                  <div>
+                                                    {if $isAdmin == 1}
+                                                      {if $item.iState==0}<a class="btn btn-default btn-xs mb-5" href="index.php?module=totalApp&action=devAppList&func=passApp&iAppId={$item.iAppId}" title="您确认要通过审核吗？" target="ajax">审核</a>{/if}
+                                                    {if $item.iState==1}<a class="btn btn-default btn-xs mb-5" href="index.php?module=totalApp&action=devAppList&func=downLineApp&iAppId={$item.iAppId}" title="您确认要下架吗？" target="ajax">下架</a>{/if}
+                                                    {if $item.iState==0}<a class="btn btn-default btn-xs mb-5" href="index.php?module=totalApp&action=devAppList&func=refuseApp&iAppId={$item.iAppId}" title="您确认要驳回吗？" target="ajax">驳回</a>{/if}
+                                                    {/if}
+                                                    
+                                                    <a class="btn btn-default btn-xs mb-5" href='index.php?module=totalApp&action=appUpdate&iAppId={$item.iAppId}'>编辑</a>
+                                                    
+                                                  </div>
+                                              </td>
+                                          </tr>
+                                        {/foreach}
+                                         
+                                      </tbody>
+                                  </table>
+
+                                  <!-- 分页用之前的插件 -->
+                                  <div class="table_foot">
+                                      <div  class="pagination" data-type='pagination' data-action="index.php?module=totalApp&action=devAppList" data-rel="showData" data-total="{$total}" data-perpage="{$pageSize}" data-numshow="7" data-current="{$pageCur}"></div>
+                                  </div>
+                                  </div>
+                                </div><!-- /.panel-body -->
+
+                            </div><!-- /.panel -->
+
+                        </div>
+		
+	</div>
+</div>
+<script type="text/javascript" src="http://hrc.oa.com/v1.1/resource/script/jquery.ext.js"></script>
+
+{literal}
+<script>
+  Trident.ready(function(){
+    initOACommon();
+
+    var urlCheck = new RegExp(/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/i);
+
+    //logo控制
+    $('input[name=iLogoApply]').change(function(){
+      if($(this).val()==2){
+        $('#sAppLogo').hide();
+        $('#sAppLogoTxt').show();
+      }else{
+        $('#sAppLogo').show();
+        $('#sAppLogoTxt').hide();
+      }
+      });
+
+    //手册控制
+    $('input[name=iManualKind]').change(function(){
+      if($(this).val()==2){
+        $('#sOperationManual').hide();
+        $('#sOperationManual_upload').show();
+        $('#hadUploadPDF').html('');
+        $('#sOperationManual').val('');
+      }else{
+        $('#sOperationManual').val('');
+        $('#sOperationManual').show();
+        $('#sOperationManual_upload').hide();
+      }
+      });
+    
+
+    //是否是专属应用判断
+    $('#sAppOnlyService_control').change(function(){
+      if($(this).prop('checked')){
+        $(this).parents('.form-group').after($('#sAppOnlyService_content_out_form').clone().attr('id','sAppOnlyService_content_in_form').show());
+      }else{
+        $('#sAppOnlyService_content_in_form').remove();
+      }
+      });
+    
+    //初始化验证
+    is =  is || {};
+    //图片logo验证
+    
+    is.sAppLogoCheck = function(e) {
+        if($('input[name=iLogoApply]:checked').val()==1){
+          if(e.value==''){
+            Trident.tip(0,'sAppLogoTips','请上传应用LOGO','right');
+            return false;
+          }else{
+            return true;
+          }
+        }
+        return true;
+        
+     }
+    //文字logo验证
+    is.sAppLogoTxtCheck = function(e) {
+      if($('input[name=iLogoApply]:checked').val()==2){
+        Trident.log(e.value.replace(/[^x00-xff]/g,"01").length);
+          return (e.value.replace(/[^x00-xff]/g,"01").length >= e.min && e.value.replace(/[^x00-xff]/g,"01").length <= e.max) ? true : false;
+          
+        }
+        return true;
+      }
+    is.sAppLogoTxtCheck.need = {min:2,max:8};
+
+//宣传图片验证
+    is.sPublicityImgCheck = function(e) {
+      if(e.value==''){
+          Trident.tip(0,'sPublicityImgTips','请至少上传一张宣传图片','right');
+          return false;
+        }
+        return true;
+      }
+    is.sPublicityImgCheck.need = {};
+
+    
+    //填写移动端地址验证
+    is.sAppMobileUrlCheck = function(e) {
+        if($('input[name=iSupportMobile]').prop('checked')){
+          if(urlCheck.test(e.value)){
+            return true;
+          }else{
+            return false;
+          }
+        }
+        return true;
+        
+     }
+     is.sAppMobileUrlCheck.need = {};
+
+     //填写操作手册
+    is.sOperationManualCheck = function(e) {
+
+            if($('input[name=iManualKind]:checked').val()==1){
+              if(urlCheck.test(e.value)){
+                return true;
+              }else{
+                return false;
+              }
+
+            }else{
+              if(e.value){
+                return true;
+              }else{
+                Trident.tip(0,'sOperationManual_upload','请上传操作手册','top');
+                return false;
+              }
+                
+            }
+         
+     }
+     is.sOperationManualCheck.need = {};
+
+
+     $('.sRoleIDListClick').live('click',function(){
+        var div = $(this).parents('.form-group');
+
+        if($(this).html() == '删除'){
+          div.remove();
+        }else{
+          var dom = div.clone();
+          dom.find('label').html('');
+          dom.find('.sRoleIDListClick').html('删除');
+          dom.find('input').val('');
+          $(this).parents('.form-group').after(dom);
+        }
+        initInput();
+     });
+
+});
+//图片上传后处理
+function afterUpload(e){
+
+if(e.retCode == 0){
+  closeAll();
+  if(e.imgType == 'sAppLogo'){
+    $('#sAppLogoShow').attr('src',e.imgUrl);
+    $('input[name=sAppLogo]').val(e.imgUrl);
+  }else if(e.imgType == 'sPublicityImg'){
+    $('#sPublicityImgShow'+e.place).attr('src',e.imgUrl);
+    $('#sPublicityImgUrl'+e.place).val(e.imgUrl);
+  }
+}else{
+  error(e.retInfo);
+}
+}
+
+//pdf上传后处理
+function afterPDFUpload(e){
+
+if(e.retCode == 0){
+  closeAll();
+  $('#sOperationManual').val(e.pdfUrl);
+  $('#hadUploadPDF').html(e.pdfName);
+}else{
+  error(e.retInfo);
+}
+}
+
+function batchGetId(control){
+  var params = {};
+  var iAppId = '';
+  $('input[name=items]:checked').each(function(){
+    iAppId=iAppId+$(this).val()+',';
+  });
+  params['iAppId'] = iAppId.substr(0,iAppId.length-1);
+  return params;
+}
+
+function afterBatch(e){
+  $('#searchBtn').click();
+}
+
+</script>
+
+{/literal}
+{include file="include/footer.html"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

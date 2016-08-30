@@ -1,0 +1,95 @@
+﻿{include file="include/header_dev.html"}
+<div class="mainContent">
+	<div class="w1200">
+		<div class="formlist row">
+		 <h3 class="title_1"><i class="icon-pencil"></i> 移动端权限申请列表</h3>
+				<div class="col-md-12">
+          <div class="panel">
+              <div class="panel-body">
+                <div class="box-tools m-b-15">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="exampleInputName2">RTX名称</label>
+                            <input type="text" class="form-control" name='sUserRtx'>
+                        </div>
+                        <a class="btn btn-success" data-auto-trigger="change" target="search" id='searchBtn'>查找</a>
+                    </form>
+
+                </div>
+                <div id='showData'>
+                <table class="table" style='text-agint:'>
+                    <thead>
+                        <tr>
+                            <th width="16%">申请者ID</th>
+                            <th width="16%">申请应用ID</th>
+                            <th width="16%">申请平台ID</th>
+                            <th width="16%">申请业务</th>
+                            <th width="16%">申请时间</th>
+                            <th width="20%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {foreach from=$putData item=item key=key}
+                        <tr data-for="highlight" class="selectedH">
+                            <td width="16%">{$item.sUserRtx}</td>
+                            <td width="16%">{$item.iAppId}</td>
+                            <td width="16%">{$item.iPlatID}</td>
+                            <td width="16%">{$item.sAppService}</td>
+                            <td width="16%">{$item.dtDate}</td>
+                            <td width="20%" data-type="btnmerge">
+                                <div>
+                                  {if $isAdmin == 1}
+                                  <a class="btn btn-info btn-xs mb-5" href="index.php?module=totalApp&action=userAuthApply&func=applyAuthNew&sUserRtx={$item.sUserRtx}&iRoleID={$item.iRoleID}&sAppService={$item.sAppService}&iPlatID={$item.iPlatID}&iId={$item.iId}&iIsPlatToService={$item.iIsPlatToService}&iId={$item.iId}" target="ajax">
+                                    权限申请</a>
+                                  {/if}     
+                                </div>
+                            </td>
+                        </tr>
+                      {/foreach}
+                       
+                    </tbody>
+                </table>
+
+                <!-- 分页用之前的插件 -->
+                <div class="table_foot">
+                    <div  class="pagination" data-type='pagination' data-action="index.php?module=totalApp&action=userAuthApply" data-rel="showData" data-total="{$total}" data-perpage="{$pageSize}" data-numshow="7" data-current="{$pageCur}"></div>
+                </div>
+                </div>
+              </div><!-- /.panel-body -->
+
+          </div><!-- /.panel -->
+
+      </div>
+		
+	</div>
+</div>
+
+
+
+{literal}
+<script>
+</script>
+
+{/literal}
+{include file="include/footer.html"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

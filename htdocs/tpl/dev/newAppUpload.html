@@ -1,0 +1,413 @@
+﻿{include file="include/header_dev.html"}
+<div class="mainContent">
+	<div class="w1200">
+		<div class="filterBar">
+			<p class="">您的位置：><a href='index.php?module=devApp&action=devAppList'>研发者</a> > 新建工具 </p>
+		</div>
+		<div class="formlist">
+		 <h3 class="title_1"><i class="icon-pencil"></i> 新建工具</h3>
+				<div class="col-sm-10">　　以下所有项为必填项，请认真填写，以便于业务更清楚的了解您的产品。</div>
+
+
+			<div class="col-md-10">
+                            <div class="panel">
+                                
+                                <div class="panel-body">
+                                    <form class="form-horizontal tasi-form">
+                                       <input type="hidden" name="iAppDevGroup" value="2">
+                                        <!-- <div class="form-group">
+                                            <label class="col-sm-2 control-label">使用角色：</label>
+                                            <div class="col-sm-10">
+                                              <label class="radio-inline">
+                                                <input type="radio" name="iAppDevGroup" value="1" checked="">业务使用
+                                              </label>
+                                              <label class="radio-inline">
+                                                <input type="radio" name="iAppDevGroup" value="2">研发使用
+                                              </label>
+                                             
+                                              
+                                              
+                                            </div>
+                                        </div> 
+ -->
+                                        <div class="form-group">
+                                          <label class="col-sm-2 control-label">应用名称：</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control input-sm" name='sAppName' data-is="not.empty" data-rd-title="应用名称不能为空">
+                                          </div>
+                                        </div>
+
+                                        
+                                       <div class="form-group">
+                                            <label class="col-sm-2 control-label">互娱中心：</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" name='iDevCenter'>
+                                                  {foreach from=$devGroup item=item key=key}
+                                                    <option value="{$key}">{$item}</option>
+                                                  {/foreach}
+                                                </select>
+                                            </div>
+                                        </div> 
+                                        <a style="display:none;" href="index.php?module=totalApp&action=totalAppList&func=getGroupByCenterID" target="html" data-rel="iDevGroupSelect" data-prefunc="getDevCenterID" data-auto="true" id="getDevGroup"></a>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">开发组：</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" name='iDevGroup' id="iDevGroupSelect">
+                                                </select>
+                                            </div>
+                                        </div> 
+                                         <div class="form-group">
+                                          <label class="col-sm-2 control-label">联系人：</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control input-sm oc_common oc_userchooser" name='sConnectRTX' data-is="not.empty" data-rd-title="联系人不能为空" id="ops" onchooser_blur="myBlur(target,data);" multiple="true" hideicon="true">
+                                          </div>
+                                        </div>
+
+                                        <!-- <div class="form-group .col-md-2">
+                                            <label class="col-sm-2 control-label">是否专属：</label>
+                                            <div class="col-sm-10">
+                                                <label class="checkbox-inline">
+                                                      <input type="checkbox" id="sAppOnlyService_control"> 是
+                                                </label>
+                                            </div>
+                                        </div>   -->
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">应用分类：</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" name='iAppGroup'>
+                                                  {foreach from=$appKind[2] item=item key=key}
+                                                    <option value="{$key}">{$item}</option>
+                                                  {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label class="col-sm-2 control-label">应用地址：</label>
+                                          <div class="col-sm-10">
+                                              <input type="text" class="form-control input-sm" name='sAppUrl' data-rd-title="请输入正确的链接">
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label class="col-sm-2 control-label">产品介绍：</label>
+                                          <div class="col-sm-10">
+                                          	<textarea class="form-control" name='sAppIntroduction' data-is="not.empty" data-rd-title="产品介绍不能为空"></textarea>
+                                              
+                                          </div>
+                                        </div>
+
+                                         <div class="form-group">
+                                            <label class="col-sm-2 control-label">是否使用QQ登录：</label>
+                                            <div class="col-sm-10">
+                                                <label class="checkbox-inline">
+                                                      <input type="checkbox" value="1" name='iLoginByQQ'> 是
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">应用logo：</label>
+                                            <div class="col-sm-5">
+                                                 <label class="radio-inline">
+                                                      <input type="radio" value="2" name='iLogoApply' checked=""> 没有，系统帮你做
+                                                </label>
+                                                <label class="radio-inline">
+                                                      <input type="radio" value="1" name='iLogoApply' > 我有logo
+                                                </label>
+                                               
+                                                 <div class="top_align pr" id='sAppLogo' style='display:none;'> 
+                                                   <a href="index.php?module=upload&action=img_upload&imgType=sAppLogo&place=1" class="uploadimg" id='sAppLogoTips' target="upload"><img src="./static/images/upimg.jpg" class="ad_img" id='sAppLogoShow'><p class="up">点击上传</p></a><p class="red f12">（需上传128x128px，50KB以下的PNG、JPG图片）</p>
+                                                   <input type='hidden' name='sAppLogo' data-is="sAppLogoCheck">
+                                                 </div>
+                                                 <div id='sAppLogoTxt' >
+                                                   
+                                                    <label class="radio-inline">输入logo名字：（最多4个字）
+                                                        <input type="text" class="form-control input-sm-10" name="sAppLogoTxt" data-is="sAppLogoTxtCheck" data-rd-title="请填写2-9个字符的文字LOGO">
+                                                    </label>
+                                                    {foreach from=$colorArray item=item}
+                                                      {if ($item%4) == 1}<div>{/if}
+                                                      <label class="checkbox-inline">
+                                                          <span class="bg{$item} icon_index_select" data-class-index="{$item}">{if $item==1}<span class="select_color">√</span>{/if}</span>
+                                                      </label>
+                                                      {if ($item%4) == 0}</div>{/if}
+                                                    {/foreach}
+                                                   
+                                                  <input type="hidden" name="iLogoColorIndex" value="1">
+                                                 </div>
+                                            </div>   
+                                            <div class="col-sm-5">
+                                                
+                                                 <div id="appPreShow">
+                                                  <ul class="list_v">
+
+                                                    <li>
+                                                      <span class=" icon_index bg1" id="appLogoShow"></span>
+                                                      <img id="appLogoImgShow" src="./static/images/upimg.jpg" style='border-radius:20px;display:none;width:128px;height:128px;'>
+                                                      <h2></h2>
+                                                      <p class="contact_p">联系人：<span class="contacts"></span>
+                                                      <!--<a href="rtxlite.hotlink://UserName={$item.sConnectRTX}"><i class="icon-book"></i></a>-->
+                                                      </p>
+                                                      <div class="textcont"></div>
+                                                      <div class="bottmdiv">
+                                                      <a class="rt authState" style='cursor:pointer;' href="javascript:void(0)"><i class="icon-edit"></i>申请开通>></a>
+                                                    </li>
+                                                    </ul>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label class="col-sm-2 control-label"></label>
+                                          <div class="col-sm-2">
+                                          <a href='index.php?module=devApp&action=newAppUpload&func=newAppInsert' target="subform" class="btn btn-info">提　交</a>
+                                          </div>
+
+                                          <div class="col-sm-2">
+                                            <a href='index.php?module=devApp&action=newAppUpload&func=newAppInsert&gonext=1' class="btn" target="subform">继续完善应用介绍</a>
+                                          </div>
+                                        </div>  
+
+                                       
+ 
+                                        
+                                    </form>
+
+                                </div><!-- /.panel-body -->
+
+                            </div><!-- /.panel -->
+                        </div>
+			
+<!--该div为专属应用提交div，放到form外-->
+                        <div class="form-group .col-md-3" id='sAppOnlyService_content_out_form' style='display:none;'>
+                            <label class="col-sm-2 control-label">所属业务：</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name='sAppOnlyService'>
+                                  {foreach from=$serviceMap item=item key=key}
+                                    <option value="{$key}">{$item}</option>
+                                  {/foreach}
+                                </select>
+                            </div>
+                        </div>
+
+
+		</div>
+		
+	</div>
+</div>
+<script type="text/javascript" src="http://hrc.oa.com/v1.1/resource/script/jquery.ext.js"></script>
+
+{literal}
+<style type="text/css">
+  .icon_index_select {
+    width: 36px;
+    height: 36px;
+    float: left;
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    line-height: 128px;
+    position: relative;
+  }
+  .select_color {
+    position: absolute;
+    left: 0px;
+    line-height: 36px;
+    width: 36px;
+  }
+</style>
+<script>
+  Trident.ready(function(){
+    initOACommon();
+
+    var urlCheck = new RegExp(/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/i);
+
+    //logo控制
+    $('input[name=iLogoApply]').change(function(){
+      if($(this).val()==2){
+        $('#sAppLogo').hide();
+        $('#sAppLogoTxt').show();
+        $('#appLogoImgShow').hide();
+        $('#appLogoShow').show();
+      }else{
+        $('#sAppLogo').show();
+        $('#sAppLogoTxt').hide();
+        $('#appLogoImgShow').show();
+        $('#appLogoShow').hide();
+      }
+      });
+
+    //是否是专属应用判断
+    $('#sAppOnlyService_control').change(function(){
+      if($(this).prop('checked')){
+        $(this).parents('.form-group').after($('#sAppOnlyService_content_out_form').clone().attr('id','sAppOnlyService_content_in_form').show());
+      }else{
+        $('#sAppOnlyService_content_in_form').remove();
+      }
+      });
+    
+    //初始化验证
+    is =  is || {};
+    //图片logo验证
+    
+    is.sAppLogoCheck = function(e) {
+        if($('input[name=iLogoApply]:checked').val()==1){
+          if(e.value==''){
+            Trident.tip(0,'sAppLogoTips','请上传应用LOGO','right');
+            return false;
+          }else{
+            return true;
+          }
+        }
+        return true;
+        
+     }
+    //文字logo验证
+    is.sAppLogoTxtCheck = function(e) {
+      if($('input[name=iLogoApply]:checked').val()==2){
+          return (e.value.replace(/[^x00-xff]/g,"01").length >= e.min && e.value.replace(/[^x00-xff]/g,"01").length <= e.max) ? true : false;
+          
+        }
+        return true;
+      }
+    is.sAppLogoTxtCheck.need = {min:2,max:9};
+
+    //预览设置
+    $('input[name=sAppName]').blur(function(){
+      var sAppName = $(this).val();
+      $('#appPreShow h2').html(cutstr(sAppName,18));
+    });
+
+    $('input[name=sConnectRTX]').blur(function(){
+      var sConnectRTX = $(this).val();
+        $('.contacts').html(cutstr(sConnectRTX,14)); 
+    });
+    $('textarea[name=sAppIntroduction]').blur(function(){
+      var sAppIntroduction = $(this).val();
+        $('.textcont').html(cutstr(sAppIntroduction,80)); 
+    });
+
+    $('input[name=sAppLogoTxt]').blur(function(){
+      var sAppLogoTxt = $(this).val();
+      var sAppLogoTxtLen = $(this).val().replace(/[^x00-xff]/g,"01").length;
+      
+      if(sAppLogoTxtLen>=7){
+        $('#appLogoShow').addClass('pr');
+        $('#appLogoShow').html('<span class="fontsize4">'+sAppLogoTxt+'</span>'); 
+      }else{
+        $('#appLogoShow').removeClass('pr');
+        $('#appLogoShow').html(sAppLogoTxt); 
+      }
+        
+
+    });
+
+    $('.icon_index_select').click(function(){
+      $('.select_color').remove();
+      $(this).html('<span class="select_color">√</span>');
+      $('input[name=iLogoColorIndex]').val($(this).attr('data-class-index'));
+      $('#appLogoShow').removeClass();
+      $('#appLogoShow').addClass('icon_index bg'+$(this).attr('data-class-index'));
+      if($('input[name=sAppLogoTxt]').val().replace(/[^x00-xff]/g,"01").length>=7){
+        $('#appLogoShow').addClass('pr');
+      }
+    });
+    $('select[name=iDevCenter]').change(function(){
+      $('#getDevGroup').click();
+    });
+    
+});
+//图片上传后处理
+function afterUpload(e){
+
+if(e.retCode == 0){
+  closeAll();
+  if(e.imgType == 'sAppLogo'){
+    $('#sAppLogoShow').attr('src',e.imgUrl);
+    $('input[name=sAppLogo]').val(e.imgUrl);
+    $('#appLogoImgShow').attr('src',e.imgUrl);
+  }
+}else{
+  error(e.retInfo);
+}
+}
+
+//pdf上传后处理
+function afterPDFUpload(e){
+
+if(e.retCode == 0){
+  closeAll();
+  $('#sOperationManual').val(e.pdfUrl);
+  $('#hadUploadPDF').html(e.pdfName);
+}else{
+  error(e.retInfo);
+}
+}
+//提交后处理
+function afterAppUpload(e){
+
+if(e.retCode == 0){
+  if(e.gonext == 1){
+
+  }else{
+
+  }
+}else{
+  error(e.retInfo);
+}
+}
+
+function cutstr(str, len) {
+        var str_length = 0;
+        var str_len = 0;
+        str_cut = new String();
+        str_len = str.length;
+        for (var i = 0; i < str_len; i++) {
+            a = str.charAt(i);
+            str_length++;
+            if (escape(a).length > 4) {
+                //中文字符的长度经编码之后大于4  
+                str_length++;
+            }
+            str_cut = str_cut.concat(a);
+            if (str_length >= len) {
+                str_cut = str_cut.concat("...");
+                return str_cut;
+            }
+        }
+        //如果给定字符串小于指定长度，则返回源字符串；  
+        if (str_length < len) {
+            return str;
+        }
+    }
+
+function getDevCenterID(){
+  var data = {};
+  data['iDevCenterID'] = $('select[name=iDevCenter]').val();
+  return data;
+}
+</script>
+
+{/literal}
+{include file="include/footer.html"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,170 @@
+﻿{include file="include/caseHeader.html"}
+<div class="mainContent">
+	<div class="w1200">
+		<div class="filterBar">
+			<!-- <a class="btn btn-default" data-toggle="modal" href="index.php?module=totalApp&action=devAppList">应用</a> <a class="btn btn-default" data-toggle="modal" href="index.php?module=devApp&action=devAppList">工具</a> <a class="btn btn-default" data-toggle="modal" href="index.php?module=devApp&action=devAppList&func=cgiList">组件</a> <a class="btn btn-primary" data-toggle="modal" href="index.php?module=totalApp&action=caseControlList">案例</a> -->
+		</div>
+		<div class="formlist row">
+		 <h3 class="title_1"><i class="icon-pencil"></i> 案例列表</h3>
+				<div class="col-md-12">
+            <div class="panel">
+                <div class="panel-body">
+
+                  <div class="box-tools-left m-b-15">  
+                    {if $isAdmin  == 1}
+                      <a class="btn btn-primary" href="index.php?module=totalApp&action=caseControlList&func=passApp" data-prefunc='batchGetId' target="ajax">审核</a>
+                      <a class="btn btn-danger" href="index.php?module=totalApp&action=caseControlList&func=refuseApp" data-prefunc='batchGetId' target="ajax">驳回</a>
+                      <a class="btn btn-warning" href="index.php?module=totalApp&action=caseControlList&func=downLineApp" data-prefunc='batchGetId' target="ajax">下架</a>
+                    {/if}
+                      <a class="btn btn-info" href="index.php?module=totalApp&action=caseUpdate">添加</a>
+                  </div>
+                  <div class="box-tools m-b-15">
+                      <form class="form-inline">
+                          <div class="form-group">
+                              <label for="exampleInputName2">案例名称</label>
+                              <input type="text" class="form-control" name='sCaseName'>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="exampleInputEmail2">案例分类</label>
+                              <select name="iCaseKindID" class="form-control" data-type="extend-select">
+                              <option value="0" >全部</option>
+                              {foreach from = $appKind[4] item=item key=key}
+                                  <option value="{$key}" >{$item}</option>
+                              {/foreach}
+                                 
+                              </select>
+                          </div>
+
+                          <a class="btn btn-success" data-auto-trigger="change" target="search" id='searchBtn'>查找</a>
+                      </form>
+
+                  </div>
+                  <div id='showData'>
+                  <table class="table" style='text-agint:'>
+                      <thead>
+                          <tr>
+                              <td width="7%">
+                                  <input type="checkbox" data-type="checkAll" data-item="items" value="1" id="input_56">
+                              </td>
+                              <th width="10%">案例ID</th>
+                              <th width="10%">案例标题</th>
+                              <th width="10%">案例分类</th>
+                              <th width="10%">发布人</th>
+                              <th width="25%">修改日期</th>
+                              <th width="10%">案例状态</th>
+                              <th width="25%">操作</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {foreach from=$putData item=item key=key}
+                          <tr data-for="highlight" class="selectedH">
+                              <td>
+                                  <input type="checkbox" name="items" value="{$item.iCaseId}">
+                                  <!--<div class="input-group-btn dropdown-open" data-type="class-cover" style="visibility:hidden;">
+                                      <button data-toggle="dropdown" type="button"><span class="caret"></span></button>
+                                      <ul role="menu" class="dropdown-menu">
+                                          <li><a class="" data-rel="showid" onclick="javascript:void();">发布</a></li>
+                                          <li><a class="">编辑</a></li>
+                                          <li><a class="">删除</a></li>
+                                          <li><a class="">查看日志</a></li>
+                                      </ul>
+                                  </div>-->
+                              </td>
+                              <td width="10%">{$item.iCaseId}</td>
+                              <td width="10%">{$item.sCaseName}</td>
+                              <td width="10%">{$appKind[4][$item.iCaseKindID]}</td>
+                              <td width="10%">{$item.sSubmitRtx}</td>
+                              <td width="25%">{$item.dtDate}</td>
+                              <td width="10%">{if $item.iState==0}未审核{elseif $item.iState==1}<span style='color: green;'>运营中</span>{elseif $item.iState==2}驳回{else}归档{/if}</td>
+                              <td data-type="btnmerge" width="25%">
+                                  <div>
+                                    {if $isAdmin == 1}
+                                      {if $item.iState==0}<a class="btn btn-default btn-xs mb-5" href="index.php?module=totalApp&action=caseControlList&func=passApp&iCaseId={$item.iCaseId}" title="您确认要通过审核吗？" target="ajax">审核</a>{/if}
+                                    {if $item.iState==1}<a class="btn btn-default btn-xs mb-5" href="index.php?module=totalApp&action=caseControlList&func=downLineApp&iCaseId={$item.iCaseId}" title="您确认要下架吗？" target="ajax">下架</a>{/if}
+                                    {if $item.iState==0}<a class="btn btn-default btn-xs mb-5" href="index.php?module=totalApp&action=caseControlList&func=refuseApp&iCaseId={$item.iCaseId}" title="您确认要驳回吗？" target="ajax">驳回</a>{/if}
+                                    {/if}
+                                    
+                                    <a class="btn btn-default btn-xs mb-5" href='index.php?module=totalApp&action=caseUpdate&iCaseId={$item.iCaseId}'>编辑</a>
+                                    
+                                  </div>
+                              </td>
+                          </tr>
+                        {/foreach}
+                         
+                      </tbody>
+                  </table>
+
+                  <!-- 分页用之前的插件 -->
+                  <div class="table_foot">
+                      <div  class="pagination" data-type='pagination' data-action="index.php?module=totalApp&action=caseControlList" data-rel="showData" data-total="{$total}" data-perpage="{$pageSize}" data-numshow="7" data-current="{$pageCur}"></div>
+                  </div>
+                  </div>
+                </div><!-- /.panel-body -->
+
+            </div><!-- /.panel -->
+
+        </div>
+		
+	</div>
+</div>
+<script type="text/javascript" src="http://hrc.oa.com/v1.1/resource/script/jquery.ext.js"></script>
+
+{literal}
+<script>
+  Trident.ready(function(){
+    initOACommon();
+
+});
+
+
+
+function batchGetId(control){
+  var params = {};
+  var iCaseId = '';
+  $('input[name=items]:checked').each(function(){
+    iCaseId=iCaseId+$(this).val()+',';
+  });
+  params['iCaseId'] = iCaseId.substr(0,iCaseId.length-1);
+  return params;
+}
+
+function afterBatch(e){
+  $('#searchBtn').click();
+}
+
+</script>
+
+{/literal}
+<div class="footer">©2016 Tencent IEG | 联系我们：RTX  rebeccayang</div>
+<script type="text/javascript" src="http://ossweb-img.qq.com/images/script/com/qq/basic/basic.js"></script>
+<script src="http://x.ied.com/static/js/lib/jquery.placeholder.js"></script>
+<script src="http://x.ied.com/static/js/core.js"></script>
+<script type="text/javascript" src="http://x.ied.com/static/js/common.js"></script>
+
+<script src="http://ossweb-img.qq.com/images/js/eas/eas.js"></script>
+{$GODMInit}
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

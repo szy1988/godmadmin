@@ -1,0 +1,174 @@
+﻿{include file="include/header_dev.html"}
+<div class="mainContent">
+	<div class="w1200">
+		<div class="filterBar">
+			<a class="btn btn-default" data-toggle="modal" href="index.php?module=totalApp&action=devAppList">应用</a> <a class="btn btn-primary" data-toggle="modal" href="index.php?module=devApp&action=devAppList">工具</a> <a class="btn btn-default" data-toggle="modal" href="index.php?module=devApp&action=devAppList&func=cgiList">组件</a> <a class="btn btn-default" data-toggle="modal" href="index.php?module=totalApp&action=caseControlList">案例</a>
+		</div>
+		<div class="formlist row">
+		 <h3 class="title_1"><i class="icon-pencil"></i> 工具列表</h3>
+				<div class="col-md-12">
+                            <div class="panel">
+                                <div class="panel-body">
+
+                                  <div class="box-tools-left m-b-15">  
+                                    {if $isAdmin == 1}
+                                      <a class="btn btn-primary" href="index.php?module=devApp&action=devAppList&func=passApp" data-prefunc='batchGetId' target="ajax">审核</a>
+                                      <a class="btn btn-danger" href="index.php?module=devApp&action=devAppList&func=refuseApp" data-prefunc='batchGetId' target="ajax">驳回</a>
+                                      <a class="btn btn-warning" href="index.php?module=devApp&action=devAppList&func=downLineApp" data-prefunc='batchGetId' target="ajax">下架</a>
+                                    {/if}
+                                      <a class="btn btn-info" href="index.php?module=devApp&action=newAppUpload">添加</a>
+                                    
+                                  </div>
+                                  <div class="box-tools m-b-15">
+                                      <form class="form-inline">
+                                          <div class="form-group">
+                                              <label for="exampleInputName2">工具名称</label>
+                                              <input type="text" class="form-control" name='sAppName'>
+                                          </div>
+
+                                          <div class="form-group">
+                                              <label for="exampleInputEmail2">开发中心</label>
+                                              <select name="iDevCenter" class="form-control" data-type="extend-select">
+                                                <option value="0" >全部</option>
+                                                {foreach from = $devGroup item=item key=key}
+                                                  <option value="{$key}" >{$item}</option>
+                                                {/foreach}
+                                              </select>
+                                          </div>
+
+                                          <div class="form-group">
+                                              <label for="exampleInputEmail2">工具分组</label>
+                                              <select name="iAppGroup" class="form-control" data-type="extend-select">
+                                              <option value="0" >全部</option>
+                                              {foreach from = $appKind[2] item=item key=key}
+                                                  <option value="{$key}" >{$item}</option>
+                                              {/foreach}
+                                                 
+                                              </select>
+                                          </div>
+
+                                          <a class="btn btn-success" target="search" id='searchBtn' data-auto-trigger="change">查找</a>
+                                      </form>
+
+                                  </div>
+                                  <div id='showData'>
+                                  <table class="table" style='text-agint:'>
+                                      <thead>
+                                          <tr>
+                                              <td width="7%">
+                                                  <input type="checkbox" data-type="checkAll" data-item="items" value="1" id="input_56">
+                                              </td>
+                                              <th width="10%">应用ID</th>
+                                              <th width="10%">应用名称</th>
+                                              <th width="10%">联系人</th>
+                                              <th width="10%">应用地址</th>
+                                              <th width="25%">产品介绍</th>
+                                              <th width="10%">智维权限</th>
+                                              <th width="10%">应用状态</th>
+                                              <th >操作</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                        {foreach from=$putData item=item key=key}
+                                          <tr data-for="highlight" class="selectedH">
+                                              <td>
+                                                  <input type="checkbox" name="items" value="{$item.iAppId}">
+                                                  <!--<div class="input-group-btn dropdown-open" data-type="class-cover" style="visibility:hidden;">
+                                                      <button data-toggle="dropdown" type="button"><span class="caret"></span></button>
+                                                      <ul role="menu" class="dropdown-menu">
+                                                          <li><a class="" data-rel="showid" onclick="javascript:void();">发布</a></li>
+                                                          <li><a class="">编辑</a></li>
+                                                          <li><a class="">删除</a></li>
+                                                          <li><a class="">查看日志</a></li>
+                                                      </ul>
+                                                  </div>-->
+                                              </td>
+                                              <td width="10%">{$item.iAppId}</td>
+                                              <td width="10%">{$item.sAppName}</td>
+                                              <td width="10%">{$item.sConnectRTX}</td>
+                                              <td width="10%"><a class="t-text-hidden" data-type="copy"  data-copy-content="{$item.sAppUrl}" data-tp-title="点击复制">{$item.sAppUrl}</a></td>
+                                              <td width="25%">{$item.sAppIntroduction}</td>
+                                              <td width="10%">
+                                              {if $item.iPlatID==0}暂无权限
+                                              {else}
+                                                <a data-tp-title="<div><p>平台ID :  {$item.iPlatID}</p><p>平台角色：</p>{foreach  from = $item.sRoleIDList item=sitem key=skey}<p>{$skey}:{$sitem}</p>{foreachelse}<p>暂无角色</p>{/foreach}</div>">查看权限</a>
+                                              {/if}
+
+                                              </td>
+                                              <td width="10%">{if $item.iState==0}未审核{elseif $item.iState==1}<span style='color: green;'>运营中</span>{elseif $item.iState==2}驳回{else}归档{/if}</td>
+                                              <td data-type="btnmerge">
+                                                  <div>
+                                                  {if $isAdmin == 1}
+                                                    {if $item.iState==0}<a class="btn btn-default btn-xs mb-5" href="index.php?module=devApp&action=devAppList&func=passApp&iAppId={$item.iAppId}" title="您确认要通过审核吗？" target="ajax">审核</a>{/if}
+                                                    {if $item.iState==1}<a class="btn btn-default btn-xs mb-5" href="index.php?module=devApp&action=devAppList&func=downLineApp&iAppId={$item.iAppId}" title="您确认要下架吗？" target="ajax">下架</a>{/if}
+                                                    {if $item.iState==0}<a class="btn btn-default btn-xs mb-5" href="index.php?module=devApp&action=devAppList&func=refuseApp&iAppId={$item.iAppId}" title="您确认要驳回吗？" target="ajax">驳回</a>{/if}
+                                                  {/if}
+                                                    
+                                                    <a class="btn btn-default btn-xs mb-5" href='index.php?module=devApp&action=appUpdate&iAppId={$item.iAppId}'>编辑</a>
+                                                    
+                                                  </div>
+                                              </td>
+                                          </tr>
+                                        {/foreach}
+                                         
+                                      </tbody>
+                                  </table>
+
+                                  <!-- 分页用之前的插件 -->
+                                  <div class="table_foot">
+                                      <div class="pagination" data-type='pagination' data-action="index.php?module=devApp&action=devAppList" data-rel="showData" data-total="{$total}" data-perpage="{$pageSize}" data-numshow="7" data-current="{$pageCur}"></div>
+                                  </div>
+                                  </div>
+                                </div><!-- /.panel-body -->
+
+                            </div><!-- /.panel -->
+
+                        </div>
+		
+	</div>
+</div>
+<script type="text/javascript" src="http://hrc.oa.com/v1.1/resource/script/jquery.ext.js"></script>
+
+{literal}
+<script>
+
+
+function batchGetId(control){
+  var params = {};
+  var iAppId = '';
+  $('input[name=items]:checked').each(function(){
+    iAppId=iAppId+$(this).val()+',';
+  });
+  params['iAppId'] = iAppId.substr(0,iAppId.length-1);
+  return params;
+}
+
+function afterBatch(e){
+  $('#searchBtn').click();
+}
+
+</script>
+
+{/literal}
+{include file="include/footer.html"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
